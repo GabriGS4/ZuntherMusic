@@ -7,7 +7,7 @@ module.exports = {
         .setName('play')
         .setDescription('Reproducir una canción')
         .addStringOption(option =>
-            option.setName('play')
+            option.setName('song')
                 .setDescription('El nombre o URL de la canción')
                 .setRequired(true)),
     execute: async ({ client, interaction }) => {
@@ -20,7 +20,7 @@ module.exports = {
         const queue = useQueue(interaction.guild);
 
         let embed = new EmbedBuilder().setColor('#2f3136');
-        let song = interaction.options.getString("play");
+        let song = interaction.options.getString("song");
 
         const res = await player.search(song, {
             requestedBy: interaction.member,
@@ -35,7 +35,7 @@ module.exports = {
         try {
             if (queue?.isPlaying()) {
                 const track = res.tracks[0];
-                queue.insertTrack(track, 0);
+                queue.addTrack(track);
                 embed
                     .setTitle("Canción añadida a la cola")
                     .setDescription("" + track.title + " \n" + track.url)
@@ -57,17 +57,25 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
+                    .setCustomId('back')
+                    .setEmoji('⏮️')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('pause')
-                    .setLabel('Pausar')
-                    .setStyle(ButtonStyle.Primary),
+                    .setEmoji('⏸')
+                    .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('skip')
-                    .setLabel('Saltar')
+                    .setEmoji('⏭️')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('exit')
-                    .setLabel('Detener')
-                    .setStyle(ButtonStyle.Danger)
+                    .setEmoji('⏹️')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId('queue')
+                    .setEmoji('📜')
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         await interaction.reply({

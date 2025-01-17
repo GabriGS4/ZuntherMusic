@@ -1,31 +1,36 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder } = require('discord.js');
+const { useQueue } = require('discord-player');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('queue')
         .setDescription('Ver las 10 primeras canciones de la cola de reproducción'),
     execute: async ({ client, interaction }) => {
-        const queue = client.player.getQueue(interaction.guild);
+        const queue = useQueue(interaction.guild);
 
-        if (!queue || !queue.playing) {
+        if (!queue) {
             await interaction.reply("No hay canciones reproduciendo.");
             return;
         }
 
-        const queueString = queue.tracks.map((track, i) => {
-            return `${i + 1}. **${track.title}**`;
-        }).slice(0, 10).join('\n');
+        if (!queue.tracks.toArray()[0]) {
+            await interaction.reply("No hay canciones en la cola de reproducción.");
+            return;
+        }
 
-        const currentSong = queue.current;
-
-        await interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle("Cola de reproducción")
-                    .setDescription("**Canción reproduciendo:**\n" + `**${currentSong.title}**\n\n**Siguientes canciones:**\n${queueString}`)
-                    .setThumbnail(currentSong.thumbnail)
-            ]
-        });
+        if (!queue.currentTrack) {
+            await interaction.reply("No hay una canción reproduciéndose actualmente.");
+            return;
+        }
+        const songs = queue.tracks.size;
+        const nextSongs = songs > 5 ? await `Y **${songs - 5}** cancion(es) más...` : await `En la playlist **${songs}** cancion(es)...`;
+        const tracks = queue.tracks.map((track, i) => `**${i + 1}** - ${track.title} | ${track.author}`);
+        const embed = new EmbedBuilder()
+            .setColor('#2f3136')
+            .setTitle('Cola de Reproducción')
+            .setDescription(`**Reproduciendo ahora:**\n${queue.currentTrack.title} - ${queue.currentTrack.author}\n\n**Siguientes canciones:**\n${tracks.slice(0, 5).join('\n')}\n\n${nextSongs}`)
+            ;
+        interaction.reply({ embeds: [embed] });
     }
 };

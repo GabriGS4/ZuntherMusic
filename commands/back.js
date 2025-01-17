@@ -5,8 +5,8 @@ const { useQueue } = require('discord-player');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('skip')
-        .setDescription('Saltar a la siguiente canción'),
+        .setName('back')
+        .setDescription('Volver a la canción anterior'),
     execute: async ({ client, interaction }) => {
         const queue = useQueue(interaction.guild);
 
@@ -15,25 +15,26 @@ module.exports = {
             return;
         }
 
-        const success = queue.node.skip();
-
-        if (!success) {
-            await interaction.reply("No se pudo saltar la canción.");
+        if (!queue.history.previousTrack) {
+            await interaction.reply("No hay canciones anteriores.");
             return;
         }
+
+        // Volvemos a la canción anterior
+        await queue.history.back();
 
         await new Promise(resolve => setTimeout(resolve, 500));
 
         const track = queue.currentTrack;
 
         if (!track) {
-            await interaction.reply("La cola está vacía después de saltar la canción.");
+            await interaction.reply("La cola está vacía después de volver.");
             return;
         }
 
         let embed = new EmbedBuilder().setColor('#2f3136');
         embed
-            .setTitle("Canción saltada\nReproduciendo...")
+            .setTitle("Canción anterior\nReproduciendo...")
             .setDescription(`**${track.title}**\n${track.url}`)
             .setFooter({ text: track.duration })
             .setThumbnail(track.thumbnail);

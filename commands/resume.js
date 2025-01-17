@@ -32,17 +32,25 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
+                    .setCustomId('back')
+                    .setEmoji('⏮️')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('pause')
-                    .setLabel('Pausar')
-                    .setStyle(ButtonStyle.Primary),
+                    .setEmoji('⏸️')
+                    .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('skip')
-                    .setLabel('Saltar')
+                    .setEmoji('⏭️')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('exit')
-                    .setLabel('Detener')
-                    .setStyle(ButtonStyle.Danger)
+                    .setEmoji('⏹️')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId('queue')
+                    .setEmoji('📜')
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         await interaction.reply({
