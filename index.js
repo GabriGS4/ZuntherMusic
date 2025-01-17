@@ -1,5 +1,6 @@
+const keep_alive = require("./keep_alive.js")
+
 require("dotenv").config();
-const server = require("./server.js")
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Client, Collection } = require("discord.js");
