@@ -1,22 +1,12 @@
 require("dotenv").config();
-
+const server = require("./server.js")
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Client, Collection } = require("discord.js");
 const { Player } = require("discord-player");
 const { YoutubeiExtractor } = require("discord-player-youtubei");
-const express = require("express");
 const fs = require("node:fs");
 const path = require("node:path");
-
-// Configurar Express
-const app = express();
-app.get("/", (req, res) => {
-    res.send("¡El bot está funcionando!");
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor Express ejecutándose en el puerto ${PORT}`));
 
 // Crear cliente de Discord
 const client = new Client({
