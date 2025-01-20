@@ -11,8 +11,11 @@ module.exports = {
                 .setDescription('El nombre o URL de la canción')
                 .setRequired(true)),
     execute: async ({ client, interaction }) => {
+        // Responder inmediatamente para evitar el tiempo límite
+        await interaction.deferReply();
+
         if (!interaction.member.voice.channel) {
-            await interaction.reply('¡Debes unirte a un canal de voz primero!');
+            await interaction.followUp('¡Debes unirte a un canal de voz primero!');
             return;
         }
 
@@ -28,7 +31,7 @@ module.exports = {
         });
 
         if (!res?.tracks.length) {
-            await interaction.reply("No encontré la canción. Intenta con otro nombre o enlace.");
+            await interaction.followUp("No encontré la canción. Intenta con otro nombre o enlace.");
             return;
         }
 
@@ -49,8 +52,9 @@ module.exports = {
                     .setFooter({ text: track.duration });
             }
         } catch (error) {
+            console.error(`Error al reproducir la canción: ${error}`);
             embed.setAuthor("Error al reproducir la canción.");
-            await interaction.reply({ embeds: [embed] });
+            await interaction.followUp({ embeds: [embed] });
             return;
         }
 
@@ -78,7 +82,7 @@ module.exports = {
                     .setStyle(ButtonStyle.Secondary)
             );
 
-        await interaction.reply({
+        await interaction.followUp({
             embeds: [embed],
             components: [row]
         });
