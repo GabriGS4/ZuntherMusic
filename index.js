@@ -35,7 +35,9 @@ client.player = new Player(client, {
     },
 });
 
-client.player.extractors.register(YoutubeiExtractor, {});
+client.player.extractors.register(YoutubeiExtractor, {
+    apiKey: process.env.YOUTUBE_API_KEY
+});
 
 // Registrar comandos en los servidores
 client.on("ready", () => {

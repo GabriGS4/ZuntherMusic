@@ -7,5 +7,5 @@ app.get("/", (req, res) => {
 });
 
 // Puerto para el servidor
-const PORT = 8080;
+const PORT = 3000;
 app.listen(PORT, () => console.log(`Servidor Express ejecutándose en el puerto ${PORT}`));
