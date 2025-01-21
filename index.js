@@ -5,7 +5,10 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Client, Collection } = require("discord.js");
 const { Player } = require("discord-player");
-const { YoutubeiExtractor } = require("discord-player-youtubei");
+//const { YoutubeiExtractor } = require("discord-player-youtubei");
+const { DefaultExtractors } = require('@discord-player/extractor');
+const playdl = require('play-dl');
+
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -35,9 +38,11 @@ client.player = new Player(client, {
     },
 });
 
-client.player.extractors.register(YoutubeiExtractor, {
+/* client.player.extractors.register(YoutubeiExtractor, {
     apiKey: process.env.YOUTUBE_API_KEY
-});
+}); */
+client.player.extractors.loadMulti(DefaultExtractors);
+client.player.extractors.register(playdl);
 
 // Registrar comandos en los servidores
 client.on("ready", () => {
