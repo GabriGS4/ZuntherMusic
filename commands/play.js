@@ -47,8 +47,6 @@ module.exports = {
             } else {
                 const { track } = await player.play(interaction.member.voice.channel, song);
                 embed
-                    .setDescription("REPRODUCIENDO");
-                embed
                     .setDescription("" + track.title + " \n" + track.url)
                     .setThumbnail(track.thumbnail)
                     .setFooter({ text: track.duration });
