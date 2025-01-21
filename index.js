@@ -5,11 +5,11 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Client, Collection } = require("discord.js");
 const { Player } = require("discord-player");
-const { YoutubeiExtractor } = require("discord-player-youtubei");
-//const { DefaultExtractors } = require('@discord-player/extractor');
+//const { YoutubeiExtractor } = require("discord-player-youtubei");
+const { SpotifyExtractor } = require('@discord-player/extractor');
 //const ytdl = require('ytdl-core');
 
-//const playdl = require('ytdl-core');
+const playdl = require('ytdl-core');
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -43,8 +43,13 @@ client.player = new Player(client, {
 /* client.player.extractors.register(YoutubeiExtractor, {
     apiKey: process.env.YOUTUBE_API_KEY
 }); */
-//client.player.extractors.loadMulti(YoutubeiExtractor);
-client.player.extractors.register(YoutubeiExtractor);
+//client.player.extractors.loadMulti(DefaultExtractors);
+client.player.extractors.register(SpotifyExtractor, {
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
+
+//client.player.extractors.register(playdl);
 
 // Registrar comandos en los servidores
 client.on("ready", () => {
