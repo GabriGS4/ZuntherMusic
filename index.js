@@ -93,5 +93,12 @@ client.on("interactionCreate", async interaction => {
     }
 });
 
+client.on('error', console.error);
+client.events.on('error', (_, e) => console.error(e));
+client.events.on('playerError', (_, e) => console.error(e));
+
+client.player.on('error', (_, e) => console.error(e));
+client.player.on('playerError', (_, e) => console.error(e));
+
 // Iniciar cliente de Discord
 client.login(process.env.TOKEN);
