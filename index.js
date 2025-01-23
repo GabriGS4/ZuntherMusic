@@ -7,10 +7,10 @@ const { Client, Collection } = require("discord.js");
 const { Player } = require("discord-player");
 const { YoutubeiExtractor } = require("discord-player-youtubei");
 //const { SpotifyExtractor } = require('@discord-player/extractor');
-const { SpotifyExtractor } = require('@discord-player/extractor');
-//const ytdl = require('ytdl-core');
-
+//const { SpotifyExtractor } = require('@discord-player/extractor');
 const playdl = require('play-dl');
+
+
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -36,6 +36,7 @@ for (const file of commandFiles) {
 // Configuración del reproductor
 client.player = new Player(client, {
     ytdlOptions: {
+        filter: 'audioonly',
         quality: "highestaudio",
         highWaterMark: 1 << 25,
     },
@@ -49,7 +50,7 @@ client.player.extractors.register(YoutubeiExtractor, {});
     clientSecret: "050407e96aa24e61a8a631a6a41b1811",
 });*/
 
-//client.player.extractors.register(playdl);
+client.player.extractors.register(playdl);
 
 // Registrar comandos en los servidores
 client.on("ready", () => {
