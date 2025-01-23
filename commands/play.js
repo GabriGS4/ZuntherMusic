@@ -45,7 +45,7 @@ module.exports = {
                     .setThumbnail(track.thumbnail)
                     .setFooter({ text: track.duration });
             } else {
-                const { track } = await player.play(interaction.member.voice.channel, song);
+                const { track } = await player.play(interaction.member.voice.channel, res.tracks[0]);
                 embed
                     .setDescription("" + track.title + " \n" + track.url)
                     .setThumbnail(track.thumbnail)
